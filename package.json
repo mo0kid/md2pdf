@@ -1,0 +1,23 @@
+{
+  "name": "md2pdf",
+  "version": "1.0.0",
+  "description": "A simple CLI tool to convert Markdown files to beautifully styled PDFs",
+  "main": "index.js",
+  "bin": {
+    "md2pdf": "./bin/md2pdf.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "commander": "^14.0.3",
+    "markdown-it": "^14.1.1",
+    "markdown-it-anchor": "^9.2.0",
+    "markdown-it-highlightjs": "^4.3.0",
+    "puppeteer": "^24.37.5"
+  }
+}
