@@ -150,4 +150,4 @@ md2pdf draft.md --no-page-numbers
 
 ## License
 
-ISC
+MIT
