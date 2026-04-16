@@ -1,6 +1,6 @@
 # md2pdf
 
-A command-line tool that converts Markdown files to cleanly styled PDFs.
+A command-line tool — and MCP server for Claude — that converts Markdown files to cleanly styled PDFs.
 
 ## Output
 
