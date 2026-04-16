@@ -1,19 +1,30 @@
 {
   "name": "md2pdf",
   "version": "1.0.0",
-  "description": "A simple CLI tool to convert Markdown files to beautifully styled PDFs",
+  "description": "Convert Markdown to cleanly styled PDFs from the command line or as an MCP server for Claude. Supports GFM tables, syntax-highlighted code, configurable page size and margins, and optional page numbers.",
   "main": "index.js",
   "bin": {
-    "md2pdf": "./bin/md2pdf.js"
+    "md2pdf": "./bin/md2pdf.js",
+    "md2pdf-mcp": "./bin/md2pdf-mcp.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "markdown",
+    "pdf",
+    "md2pdf",
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "puppeteer",
+    "cli"
+  ],
   "author": "",
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "commander": "^14.0.3",
     "markdown-it": "^14.1.1",
     "markdown-it-anchor": "^9.2.0",

@@ -142,11 +142,105 @@ md2pdf draft.md --no-page-numbers
 - Images (scaled to page width)
 - Links
 
+## Use as an MCP server (for Claude)
+
+md2pdf ships a [Model Context Protocol](https://modelcontextprotocol.io)
+server that exposes the converter as a tool to Claude Desktop, Claude Code,
+and any other MCP-compatible client. Once configured, you can ask Claude
+things like *"turn `notes.md` into a PDF"* or *"render this Markdown as a PDF
+on my Desktop"* and it will call the converter for you — no need to drop into
+a terminal.
+
+After `npm link` (or `npm install -g`), the `md2pdf-mcp` command is available
+on your `PATH` and speaks MCP over stdio.
+
+### Tools exposed
+
+| Tool | Use when | Required arguments |
+|------|----------|-------------------|
+| `convert_file_to_pdf` | The Markdown already exists as a `.md` file on disk | `input_path` |
+| `convert_markdown_to_pdf` | The Markdown is in the conversation (just generated, pasted, etc.) | `markdown`, `output_path` |
+
+Both tools accept the same optional formatting arguments:
+
+| Argument | Type | Default | Description |
+|----------|------|---------|-------------|
+| `format` | `"A4"` \| `"Letter"` \| `"Legal"` | `A4` | Page size |
+| `margin` | string | `2.5cm` | Top and bottom margin (e.g. `1in`, `20mm`) |
+| `margin_x` | string | `2cm` | Left and right margin |
+| `page_numbers` | boolean | `true` | Show `n / total` in the footer |
+
+On success, both tools return a short text result containing the absolute
+path of the written PDF.
+
+### Claude Desktop
+
+Add the server to `~/Library/Application Support/Claude/claude_desktop_config.json`
+on macOS (or `%APPDATA%\Claude\claude_desktop_config.json` on Windows), then
+restart Claude Desktop:
+
+```json
+{
+  "mcpServers": {
+    "md2pdf": {
+      "command": "md2pdf-mcp"
+    }
+  }
+}
+```
+
+If `md2pdf-mcp` is not on the global `PATH` that Claude Desktop sees (common
+when using `nvm`), point at the absolute path instead:
+
+```json
+{
+  "mcpServers": {
+    "md2pdf": {
+      "command": "/usr/local/bin/node",
+      "args": ["/absolute/path/to/md2pdf/bin/md2pdf-mcp.js"]
+    }
+  }
+}
+```
+
+### Claude Code
+
+```bash
+claude mcp add md2pdf md2pdf-mcp
+```
+
+Verify the server is registered and healthy:
+
+```bash
+claude mcp list
+```
+
+### Example prompts
+
+Once the server is connected, try prompts like:
+
+- *"Convert `~/Documents/notes.md` to a PDF."*
+- *"Render `report.md` as a Letter-sized PDF with 1 inch margins, no page numbers."*
+- *"Take the meeting notes you just drafted and save them as a PDF on my Desktop."*
+
+### Under the hood
+
+The MCP server is a thin wrapper around the same `lib/convert.js` used by the
+CLI, so output is byte-for-byte identical between the two entry points. PDF
+rendering uses Puppeteer (headless Chromium), so the first run after install
+may download a Chromium binary.
+
 ## Dependencies
 
 - [markdown-it](https://github.com/markdown-it/markdown-it) -- Markdown parser
 - [highlight.js](https://highlightjs.org/) -- Syntax highlighting
 - [Puppeteer](https://pptr.dev/) -- PDF rendering via headless Chrome
+
+## Support
+
+If you find md2pdf useful and want to say thanks, you can
+[buy me a coffee on Ko-fi](https://ko-fi.com/djw_audio) — it genuinely
+helps keep side projects like this one alive.
 
 ## License
 
